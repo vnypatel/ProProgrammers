@@ -4,114 +4,114 @@ import java.util.Scanner;
 
 public class BorrowBookUI {
 	
-	public static enum uI_STaTe { INITIALISED, READY, RESTRICTED, SCANNING, IDENTIFIED, FINALISING, COMPLETED, CANCELLED };
+	public static enum UiState { INITIALISED, READY, RESTRICTED, SCANNING, IDENTIFIED, FINALISING, COMPLETED, CANCELLED };
 
-	private BorrowBookControl CoNtRoL;
-	private Scanner InPuT;
-	private uI_STaTe StaTe;
+	private BorrowBookControl Control;
+	private Scanner Input;
+	private UiState State;
 
 	
 	public BorrowBookUI(BorrowBookControl control) {
-		this.CoNtRoL = control;
-		InPuT = new Scanner(System.in);
-		StaTe = uI_STaTe.INITIALISED;
-		control.SeT_Ui(this);
+		this.Control = control;
+		Input = new Scanner(System.in);
+		State = UiState.INITIALISED;
+		control.setUi(this);
 	}
 
 	
-	private String iNpUT(String PrOmPt) {
-		System.out.print(PrOmPt);
-		return InPuT.nextLine();
+	private String input(String Prompt) {
+		System.out.print(Prompt);
+		return Input.nextLine();
 	}	
 		
 		
-	private void OuTpUt(Object ObJeCt) {
-		System.out.println(ObJeCt);
+	private void Output(Object object) {
+		System.out.println(object);
 	}
 	
 			
-	public void SeT_StAtE(uI_STaTe StAtE) {
-		this.StaTe = StAtE;
+	public void setState(UiState State) {
+		this.State = State;
 	}
 
 	
-	public void RuN() {
-		OuTpUt("Borrow Book Use Case UI\n");
+	public void Run() {
+		Output("Borrow Book Use Case UI\n");
 		
 		while (true) {
 			
-			switch (StaTe) {			
+			switch (State) {			
 			
 			case CANCELLED:
-				OuTpUt("Borrowing Cancelled");
+				Output("Borrowing Cancelled");
 				return;
 
 				
 			case READY:
-				String MEM_STR = iNpUT("Swipe member card (press <enter> to cancel): ");
+				String MEM_STR = inout("Swipe member card (press <enter> to cancel): ");
 				if (MEM_STR.length() == 0) {
-					CoNtRoL.CaNcEl();
+					Control.cancel();
 					break;
 				}
 				try {
-					int MeMbEr_Id = Integer.valueOf(MEM_STR).intValue();
-					CoNtRoL.SwIpEd(MeMbEr_Id);
+					int memberId = Integer.valueOf(MEM_STR).intValue();
+					Control.Swiped(memberId);
 				}
 				catch (NumberFormatException e) {
-					OuTpUt("Invalid Member Id");
+					Output("Invalid Member Id");
 				}
 				break;
 
 				
 			case RESTRICTED:
-				iNpUT("Press <any key> to cancel");
-				CoNtRoL.CaNcEl();
+				input("Press <any key> to cancel");
+				Control.Cancel();
 				break;
 			
 				
 			case SCANNING:
-				String BoOk_StRiNg_InPuT = iNpUT("Scan Book (<enter> completes): ");
-				if (BoOk_StRiNg_InPuT.length() == 0) {
-					CoNtRoL.CoMpLeTe();
+				String bookStringInput = input("Scan Book (<enter> completes): ");
+				if (bookStringInput.length() == 0) {
+					Control.Complete();
 					break;
 				}
 				try {
-					int BiD = Integer.valueOf(BoOk_StRiNg_InPuT).intValue();
-					CoNtRoL.ScAnNeD(BiD);
+					int Bid = Integer.valueOf(bookStringInput).intValue();
+					Control.Scanned(Bid);
 					
 				} catch (NumberFormatException e) {
-					OuTpUt("Invalid Book Id");
+					Output("Invalid Book Id");
 				} 
 				break;
 					
 				
 			case FINALISING:
-				String AnS = iNpUT("Commit loans? (Y/N): ");
-				if (AnS.toUpperCase().equals("N")) {
-					CoNtRoL.CaNcEl();
+				String ans = input("Commit loans? (Y/N): ");
+				if (ans.toUpperCase().equals("N")) {
+					Control.Cancel();
 					
 				} else {
-					CoNtRoL.CoMmIt_LoAnS();
-					iNpUT("Press <any key> to complete ");
+					Control.CommitLoans();
+					input("Press <any key> to complete ");
 				}
 				break;
 				
 				
 			case COMPLETED:
-				OuTpUt("Borrowing Completed");
+				Output("Borrowing Completed");
 				return;
 	
 				
 			default:
-				OuTpUt("Unhandled state");
-				throw new RuntimeException("BorrowBookUI : unhandled state :" + StaTe);			
+				Output("Unhandled state");
+				throw new RuntimeException("BorrowBookUI : unhandled state :" + State);			
 			}
 		}		
 	}
 
 
-	public void DiSpLaY(Object object) {
-		OuTpUt(object);		
+	public void Display(Object object) {
+		Output(object);		
 	}
 
 
