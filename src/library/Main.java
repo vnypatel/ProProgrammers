@@ -3,7 +3,11 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 import library.borrowbook.BorrowBookUI;
+
 import library.borrowbook.BorrowBookControl;
+
+import library.borrowbook.bORROW_bOOK_cONTROL;
+
 import library.entities.Book;
 import library.entities.Calendar;
 import library.entities.Library;
@@ -135,7 +139,8 @@ public class Main {
 		output("\nEnded\n");
 	}	
 
-		private static void PAY_FINES() {
+	
+	private static void PAY_FINES() {
 		new PayFineUI(new pAY_fINE_cONTROL()).RuN();		
 	}
 
@@ -168,7 +173,11 @@ public class Main {
 
 
 	private static void BORROW_BOOK() {
+
 		new BorrowBookUI(new BorrowBookControl()).RuN();		
+
+		new BorrowBookUI(new bORROW_bOOK_cONTROL()).RuN();		
+
 	}
 
 
