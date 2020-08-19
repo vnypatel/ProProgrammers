@@ -1,10 +1,9 @@
 package library.borrowbook;
 import java.util.Scanner;
-<<<
-//test
-=======
->>>
 
+// Author : Vinaykumar
+// Mediator : Shubham
+// Reviewer : Nurul
 
 public class BorrowBookUI {
 	
